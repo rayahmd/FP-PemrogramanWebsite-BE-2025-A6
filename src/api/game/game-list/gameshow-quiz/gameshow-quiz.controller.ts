@@ -1,6 +1,7 @@
 import type { NextFunction, Request, Response } from 'express';
+
 import { GameshowQuizService } from './gameshow-quiz.service';
-import { type CreateGameshowDTO, type CheckGameshowAnswerDTO } from './schema';
+import { type CheckGameshowAnswerDTO, type CreateGameshowDTO } from './schema';
 
 export const GameshowQuizController = {
   /**
@@ -8,7 +9,7 @@ export const GameshowQuizController = {
    * Request body sudah divalidasi oleh validateBody middleware
    */
   create: async (
-    request: Request<Record<string, never>, any, CreateGameshowDTO>,
+    request: Request<Record<string, never>, object, CreateGameshowDTO>,
     response: Response,
     next: NextFunction,
   ) => {
@@ -35,7 +36,7 @@ export const GameshowQuizController = {
    * 2. GET GAME DATA (PLAY)
    */
   getGameParams: async (
-    request: Request<{ id: string }, any, Record<string, never>>,
+    request: Request<{ id: string }, object, Record<string, never>>,
     response: Response,
     next: NextFunction,
   ) => {
@@ -61,7 +62,7 @@ export const GameshowQuizController = {
    * Request body sudah divalidasi oleh validateBody middleware
    */
   checkAnswer: async (
-    request: Request<{ id: string }, any, CheckGameshowAnswerDTO>,
+    request: Request<{ id: string }, object, CheckGameshowAnswerDTO>,
     response: Response,
     next: NextFunction,
   ) => {
