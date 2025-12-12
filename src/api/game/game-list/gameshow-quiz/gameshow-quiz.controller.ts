@@ -10,7 +10,7 @@ export const GameshowQuizController = {
     next: NextFunction,
   ) => {
     try {
-      const creatorId = (request as any).user?.id ?? 'user-id-placeholder';
+      const creatorId = (request as any).user?.user_id;
 
       const newGame = await GameshowQuizService.createGame(
         request.body,
