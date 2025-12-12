@@ -228,4 +228,4 @@ export const GameController = Router()
       }
     },
   )
-  .use('/game-type', GameListRouter);
+  .use('/game-list', GameListRouter);
