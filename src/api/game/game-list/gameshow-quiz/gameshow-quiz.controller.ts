@@ -1,13 +1,14 @@
 
 import type { NextFunction, Request, Response } from 'express';
 import { Router } from 'express';
+import { validateAuth } from '@/common';
 import { GameshowQuizService } from './gameshow-quiz.service';
 import { CheckGameshowAnswerSchema, type CheckGameshowAnswerDTO, type CreateGameshowDTO } from './schema';
 
 const GameshowQuizController = Router();
 
 // CREATE
-GameshowQuizController.post('/', async (
+GameshowQuizController.post('/', validateAuth({}), async (
   request: Request<Record<string, never>, object, CreateGameshowDTO>,
   response: Response,
   next: NextFunction,
@@ -67,7 +68,7 @@ GameshowQuizController.get('/play/:id', async (
 });
 
 // PLAY GAME (Private/Preview, hanya creator)
-GameshowQuizController.get('/preview/:id', async (
+GameshowQuizController.get('/preview/:id', validateAuth({}), async (
   request: Request<{ id: string }>,
   response: Response,
   next: NextFunction,
@@ -132,7 +133,7 @@ GameshowQuizController.post('/:id/evaluate', async (
 });
 
 // UPDATE
-GameshowQuizController.put('/:id', async (
+GameshowQuizController.put('/:id', validateAuth({}), async (
   request: Request<{ id: string }, object, CreateGameshowDTO>,
   response: Response,
   next: NextFunction,
@@ -152,7 +153,7 @@ GameshowQuizController.put('/:id', async (
 });
 
 // DELETE
-GameshowQuizController.delete('/:id', async (
+GameshowQuizController.delete('/:id', validateAuth({}), async (
   request: Request<{ id: string }>,
   response: Response,
   next: NextFunction,
