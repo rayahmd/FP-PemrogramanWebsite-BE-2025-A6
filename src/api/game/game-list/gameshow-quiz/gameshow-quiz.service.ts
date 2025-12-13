@@ -9,8 +9,20 @@ import {
 export const GameshowQuizService = {
   // Play Game (public/private)
   playGame: async (gameId: string, isPreview: boolean, userId?: string) => {
-    const game = await prisma.games.findUnique({ where: { id: gameId } });
-    if (!game) throw new Error('Game tidak ditemukan');
+    const game = await prisma.games.findUnique({
+      where: { id: gameId },
+      select: {
+        id: true,
+        name: true,
+        description: true,
+        thumbnail_image: true,
+        is_published: true,
+        creator_id: true,
+        game_json: true,
+        game_template: { select: { slug: true } },
+      },
+    });
+    if (!game || game.game_template.slug !== 'gameshow-quiz') throw new Error('Game tidak ditemukan');
     if (isPreview) {
       if (!userId || game.creator_id !== userId) throw new Error('Akses ditolak: hanya creator yang bisa preview');
     } else {
@@ -91,8 +103,18 @@ export const GameshowQuizService = {
   },
 
   getGameParams: async (gameId: string) => {
-    const game = await prisma.games.findUnique({ where: { id: gameId } });
-    if (!game) throw new Error('Game tidak ditemukan');
+    const game = await prisma.games.findUnique({
+      where: { id: gameId },
+      select: {
+        id: true,
+        name: true,
+        description: true,
+        thumbnail_image: true,
+        game_json: true,
+        game_template: { select: { slug: true } },
+      },
+    });
+    if (!game || game.game_template.slug !== 'gameshow-quiz') throw new Error('Game tidak ditemukan');
     const gameData = game.game_json as unknown as GameshowParameters;
     const sanitizedQuestions = gameData.questions.map(
       (q: GameshowQuestion) => ({
@@ -117,8 +139,15 @@ export const GameshowQuizService = {
   },
 
   checkAnswer: async (gameId: string, payload: CheckGameshowAnswerDTO) => {
-    const game = await prisma.games.findUnique({ where: { id: gameId } });
-    if (!game) throw new Error('Game tidak ditemukan');
+    const game = await prisma.games.findUnique({
+      where: { id: gameId },
+      select: {
+        id: true,
+        game_json: true,
+        game_template: { select: { slug: true } },
+      },
+    });
+    if (!game || game.game_template.slug !== 'gameshow-quiz') throw new Error('Game tidak ditemukan');
     const gameData = game.game_json as unknown as GameshowParameters;
     const question = gameData.questions.find(q => q.id === payload.questionId);
     if (!question) throw new Error('Pertanyaan tidak valid');
