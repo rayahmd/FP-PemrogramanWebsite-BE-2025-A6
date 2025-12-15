@@ -2,6 +2,7 @@ import { Router } from 'express';
 
 import { AnagramController } from './anagram/anagram.controller';
 import { CrosswordController } from './crossword/crossword.controller';
+import { FindTheMatchController } from './find-the-match/find-the-match.controller';
 import { MazeChaseController } from './maze-chase/maze-chase.controller';
 import { PairOrNoPairController } from './pair-or-no-pair/pair-or-no-pair.controller';
 import { QuizController } from './quiz/quiz.controller';
@@ -22,6 +23,7 @@ GameListRouter.use('/anagram', AnagramController);
 gameListRouter.use('/crossword', CrosswordController);
 GameListRouter.use('/pair-or-no-pair', PairOrNoPairController);
 GameListRouter.use('/type-speed', TypeSpeedController);
+gameListRouter.use('/find-the-match', FindTheMatchController);
 gameListRouter.use('/spin-the-wheel', SpinTheWheelController);
 gameListRouter.use('/true-or-false', TrueOrFalseController);
 GameListRouter.use('/gameshow-quiz', GameshowQuizRouter);
